@@ -10,14 +10,24 @@
     <!-- Content Row -->
     <div class="row" >
         <div class="col-12">
-       <form method="post">
+        @if($errors->any())
+            @foreach($errors->all() as $error)
+                <div class="alert alert-danger">{{ $error }}</div>
+            @endforeach
+        @endif
+       <form method="post" action="{{ route('admin.news.store') }}">
+           @csrf
            <div class="form-group">
                <label for="title">Заголовок</label>
-               <input type="text" class="form-control" name="title" id="title">
+               <input type="text" class="form-control" name="title" id="title" value="{{ old('title') }}">
+           </div>
+           <div class="form-group">
+               <label for="author">Автор</label>
+               <input type="text" class="form-control" name="author" id="author" value="{{ old('author') }}">
            </div>
            <div class="form-group">
                <label for="description">Описание</label>
-               <textarea class="form-control" name="description" id="description"></textarea>
+               <textarea class="form-control" name="description" id="description">{!! old('description') !!}</textarea>
            </div>
 
            <button class="btn btn-primary">Сохранить</button>
