@@ -30,12 +30,24 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function() {
 Route::group(['prefix' => 'news'], function() {
 	Route::get('/', [NewsController::class, 'index'])
 		->name('news');
-	Route::get('/show/{id}', [NewsController::class, 'show'])
-		->where('id', '\d+')
+	Route::get('/show/{news}', [NewsController::class, 'show'])
+		->where('news', '\d+')
 		->name('news.show');
 });
 
+Route::get('collection', function() {
+	$collect = collect([
+		['name' => 'Anna', 'age' => 20, 'work' => 'IT'],
+		['name' => 'Mike', 'age' => 28, 'work' => 'IT'],
+		['name' => 'Kate', 'age' => 25, 'work' => 'Education'],
+		['name' => 'Jhon', 'age' => 33, 'work' => 'Marketing'],
+		['name' => 'Liza', 'age' => 35, 'work' => 'Ads']
+	]);
 
+	dd(
+	   $collect->where('work', '=', 'IT')->shuffle()
+	);
+});
 
 
 

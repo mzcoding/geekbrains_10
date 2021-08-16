@@ -9,11 +9,13 @@
 
     <!-- Content Row -->
     <div class="row">
+        @include('inc.message')
         <div class="table-responsive">
             <table class="table table-bordered">
                 <thead>
                   <tr>
                       <th>Заколовок</th>
+                      <th>Категория</th>
                       <th>Статус</th>
                       <th>Автор</th>
                       <th>Дата добавления</th>
@@ -22,11 +24,13 @@
                 </thead>
                 <tbody>
                   @forelse($newsList as $news)
+
                       <tr>
                           <td>{{ $news->title }}</td>
+                          <td>{{ optional($news->category)->title }}</td>
                           <td>{{ $news->status }}</td>
                           <td>{{ $news->author }}</td>
-                          <td>{{ now()->format('d-m-Y H:i') }}</td>
+                          <td> @if($news->updated_at) {{ $news->updated_at }} @else {{ now() }} @endif</td>
                           <td><a href="{{ route('admin.news.edit', ['news' => $news->id]) }}" style="font-size: 12px;">ред.</a> &nbsp;
                               <a href="javascript:;" style="font-size: 12px; color:red;">уд.</a></td>
                       </tr>
@@ -37,6 +41,8 @@
                   @endforelse
                 </tbody>
             </table>
+
+            {{$newsList->links() }}
         </div>
     </div>
 @endsection

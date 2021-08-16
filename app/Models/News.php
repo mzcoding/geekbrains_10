@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Collection;
 
 class News extends Model
@@ -12,16 +13,14 @@ class News extends Model
 
     protected $table = "news";
 
-    protected array $allowedFields = ['id', 'title', 'author', 'status', 'description'];
+    public static array $allowedFields = ['id', 'title', 'author', 'status', 'description'];
 
-    public function getNews(): Collection
+    protected $fillable = [
+		'category_id', 'title', 'description', 'author', 'status'
+	];
+
+    public function category(): BelongsTo
 	{
-		return \DB::table($this->table)->select($this->allowedFields)->get();
-
-	}
-
-	public function getNewsById(int $id): object
-	{
-		return \DB::table($this->table)->select($this->allowedFields)->find($id);
+		return $this->belongsTo(Category::class);
 	}
 }

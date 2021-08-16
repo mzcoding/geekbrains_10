@@ -13,11 +13,10 @@ class CategoryController extends Controller
      *
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
 	{
-		$model = new Category();
-		$categories = $model->getCategories();
-
+		$categories = Category::orderBy('id', $request->query('sort', 'asc'))
+			->paginate(config('paginate.admin.categories'));
 
         return view('admin.news.categories.index', [
         	'categories' => $categories
@@ -38,11 +37,24 @@ class CategoryController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+     * @return \Illuminate\Http\RedirectResponse
+	 */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+        	'title' => ['required', 'string']
+		]);
+
+        $category = Category::create(
+			$request->only(['title', 'description'])
+		);
+
+        if($category) {
+        	return redirect()->route('admin.categories.index')
+				->with('success', 'Категория успешно добавлена');
+		}
+
+        return back()->withInput()->with('error', 'Не удалось добавть категорию');
     }
 
     /**
@@ -51,41 +63,60 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Category $category)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+	/**
+	 * Show the form for editing the specified resource.
+	 *
+	 * @param Category $category
+	 * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
+	 */
+    public function edit(Category $category)
     {
-        //
+        return view('admin.news.categories.edit', [
+        	'category' => $category
+		]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+	/**
+	 * Update the specified resource in storage.
+	 *
+	 * @param \Illuminate\Http\Request $request
+	 * @param Category $category
+	 * @return \Illuminate\Http\RedirectResponse
+	 */
+    public function update(Request $request, Category $category)
     {
-        //
+		$request->validate([
+			'title' => ['required', 'string']
+		]);
+
+		/*$category->title = $request->input('title');
+		$category->description = $request->input('description');
+		$category = $category->save();*/
+
+		$category = $category->fill(
+			$request->only(['title', 'description'])
+		)->save();
+
+		if($category) {
+			return redirect()->route('admin.categories.index')
+				->with('success', 'Категория успешно сохранена');
+		}
+		return back()->withInput()->with('error', 'Не удалось сохранить категорию');
+
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+	/**
+	 * Remove the specified resource from storage.
+	 *
+	 * @param Category $category
+	 * @return \Illuminate\Http\Response
+	 */
+    public function destroy(Category $category)
     {
         //
     }
