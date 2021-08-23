@@ -10,6 +10,7 @@
     <!-- Content Row -->
     <div class="row" >
         <div class="col-12">
+
             @if($errors->any())
                 @foreach($errors->all() as $error)
                     <div class="alert alert-danger">{{ $error }}</div>
@@ -34,10 +35,16 @@
                 <div class="form-group">
                     <label for="title">Заголовок</label>
                     <input type="text" class="form-control" name="title" id="title" value="{{ $news->title }}">
+                    @error('title')
+                      <div style="color:red; font-weight: bold;">{{ $message }}</div>
+                    @enderror
                 </div>
                 <div class="form-group">
                     <label for="author">Автор</label>
                     <input type="text" class="form-control" name="author" id="author" value="{{ $news->author }}">
+                    @error('author')
+                      <div style="color:red; font-weight: bold;">{{ $message }}</div>
+                    @enderror
                 </div>
                 <div class="form-group">
                     <label for="image">Изображение</label>

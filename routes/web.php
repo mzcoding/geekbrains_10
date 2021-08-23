@@ -1,10 +1,10 @@
 <?php
 
-
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\IndexController;
 //controllers
 use App\Http\Controllers\NewsController;
+use App\Http\Controllers\Account\IndexController as AccountController;
 use App\Http\Controllers\Admin\NewsController as AdminNewsController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 /*
@@ -21,10 +21,16 @@ use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::group(['prefix' => 'admin', 'as' => 'admin.'], function() {
-	Route::get('/', IndexController::class)->name('index');
-	Route::resource('categories', AdminCategoryController::class);
-	Route::resource('news', AdminNewsController::class);
+
+Route::group(['middleware' => 'auth'], function() {
+	   Route::get('/account', AccountController::class)
+	                 ->name('account');
+
+       Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'admin'], function() {
+	     Route::get('/', IndexController::class)->name('index');
+	     Route::resource('categories', AdminCategoryController::class);
+	     Route::resource('news', AdminNewsController::class);
+      });
 });
 
 Route::group(['prefix' => 'news'], function() {
@@ -36,6 +42,16 @@ Route::group(['prefix' => 'news'], function() {
 });
 
 Route::get('collection', function() {
+	//session(['new_session' => 1]);
+	// session()->put('key', 'value');
+
+	//if(session()->has('key')) {
+		//session()->forget('new_session');
+		//dd(session()->all());
+	//}
+
+	//session()->forget('new_session');
+
 	$collect = collect([
 		['name' => 'Anna', 'age' => 20, 'work' => 'IT'],
 		['name' => 'Mike', 'age' => 28, 'work' => 'IT'],
@@ -50,4 +66,6 @@ Route::get('collection', function() {
 });
 
 
+Auth::routes();
 
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

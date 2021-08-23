@@ -1,0 +1,47 @@
+{
+  "version" : "1.0",
+  "profiles" : [ {
+    "id" : "f2cc8606-c852-4b30-a5b5-4e77cbe853f1",
+    "name" : "Laravel (PHP, BLADE)",
+    "keyNamingPattern" : "SNAKE_CASE_PATTERN",
+    "sink" : {
+      "id" : "ea32e481-c24a-4ca4-bda3-4512f018284c",
+      "type" : "symfony",
+      "translationsDirectory" : "$PROJECT_DIR$/resources/lang",
+      "fileType" : "php",
+      "defaultLocale" : "en",
+      "namespaces" : [ "auth", "pagination", "passwords", "validation" ],
+      "outputFilenameTemplate" : "%locale%/%namespace%.php",
+      "nestingType" : "DOT",
+      "placeholderFormatterName" : "LARAVEL"
+    },
+    "sources" : [ {
+      "id" : "cbfdf8bf-3df5-4f52-a1c9-96a1a768ebce",
+      "type" : "php",
+      "scopeName" : "i18n Ally: Laravel/PHP source",
+      "scopePattern" : "file[code]:app//*&&!file[code]:app/Broadcasting//*&&!file[code]:app/Console//*&&!file[code]:app/Events//*&&!file[code]:app/Exceptions//*&&!file[code]:app/Models//*&&!file[code]:app/Providers//*",
+      "functionName" : "trans",
+      "argumentsTemplate" : "'%namespace%.%key%', %map%",
+      "skipDefaultNamespace" : false,
+      "sprintfMode" : false
+    }, {
+      "id" : "c27b74f5-d520-454a-9c4d-d24d91829bb0",
+      "type" : "blade",
+      "scopeName" : "i18n Ally: Laravel/Blade templates",
+      "scopePattern" : "file[code]:resources/views//*",
+      "functionName" : "trans",
+      "argumentsTemplate" : "'%namespace%.%key%', %map%",
+      "inlineTagNames" : [ "a", "abbr", "acronym", "b", "bdi", "bdo", "big", "br", "cite", "code", "data", "del", "dfn", "em", "i", "img", "input", "ins", "kbd", "label", "mark", "meter", "output", "progress", "q", "ruby", "s", "samp", "slot", "small", "span", "strong", "sub", "sup", "time", "u", "tt", "var", "wbr" ],
+      "translatableAttributeNames" : [ "title", "alt", "placeholder", "label", "aria-label" ],
+      "skipDefaultNamespace" : false
+    } ]
+  } ],
+  "ignores" : {
+    "valuesInProject" : [ "Это поле нужно обязательно заполнить (Поле: :attribute)" ],
+    "valuesInFile" : { },
+    "filesInProject" : [ ],
+    "unignoredFunctionNames" : [ ],
+    "unignoredFunctionArguments" : { },
+    "ignoredArrayKeys" : [ ]
+  }
+}
