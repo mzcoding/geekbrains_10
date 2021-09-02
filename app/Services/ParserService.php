@@ -28,4 +28,14 @@ class ParserService implements Parser
 			]
 		]);
 	}
+
+	public function saveData(string $url): void
+	{
+		$data = $this->getData($url);
+		$e = explode("/", $url);
+		$fileName = end($e);
+
+		$response = json_encode($data);
+		\Storage::append('news/' . $fileName . ".txt", $response);
+	}
 }
